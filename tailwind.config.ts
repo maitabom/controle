@@ -12,6 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      spacing: {
+        "heightscreen": "calc(100vh - 80px)"
+      }
     },
   },
   plugins: [],
