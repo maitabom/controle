@@ -33,7 +33,7 @@ export default function Header() {
         )}
 
         {status === "unauthenticated" && (
-          <button onClick={handleLogin}>
+          <button onClick={handleLogin} title="Logar com Google">
             <FiLock size={26} color="#4b5563" />
           </button>
         )}
