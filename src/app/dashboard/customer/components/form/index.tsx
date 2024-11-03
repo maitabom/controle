@@ -32,6 +32,7 @@ export default function NewCustomerForm({ userId }: NewCustomerFormProperties) {
         userId: userId,
       })
       .then((response) => {
+        router.refresh();
         router.replace("/dashboard/customer");
       })
       .catch((error) => {
