@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { schema } from "./schema";
 import InputField from "@/components/input";
+import { api } from "@/lib/api";
+import NewCustomerFormProperties from "./properties";
+import { useRouter } from "next/navigation";
 
 type FormData = z.infer<typeof schema>;
 
-export default function NewCustomerForm() {
+export default function NewCustomerForm({ userId }: NewCustomerFormProperties) {
   const {
     register,
     handleSubmit,
@@ -17,7 +20,24 @@ export default function NewCustomerForm() {
     resolver: zodResolver(schema),
   });
 
-  function handleRegister(data: FormData) {}
+  const router = useRouter();
+
+  async function handleRegister(data: FormData) {
+    api
+      .post("/api/customer", {
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        address: data.address,
+        userId: userId,
+      })
+      .then((response) => {
+        router.replace("/dashboard/customer");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <form
