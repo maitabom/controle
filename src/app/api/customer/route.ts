@@ -49,6 +49,19 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Request invalid" }, { status: 400 });
   }
 
+  const ticketsPivot = await prisma.ticket.findFirst({
+    where: {
+      customerId: customerId,
+    },
+  });
+
+  if (ticketsPivot) {
+    return NextResponse.json(
+      { error: "Operation not allowed" },
+      { status: 406 }
+    );
+  }
+
   try {
     await prisma.customer.delete({
       where: {

@@ -30,6 +30,10 @@ export default async function DashboardCustomer() {
             <CardCustomer key={customer.id} customer={customer} />
           ))}
         </section>
+
+        {customers.length === 0 && (
+          <h2 className="text-gray-600">Não há nenhum cliente cadastrado ainda...</h2>
+        )}
       </div>
     </Container>
   );
