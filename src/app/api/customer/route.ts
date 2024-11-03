@@ -5,12 +5,12 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-
-  if (!session || session.user) {
+  
+  if (!session || !session.user) {
     return NextResponse.json({ error: "Not authorized" }, { status: 401 });
   }
 
-  const { name, email, phone, address, userId } = request.json();
+  const { name, email, phone, address, userId } = await request.json();
 
   try {
     await prisma.customer.create({
@@ -25,11 +25,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "Customer has been create sucessful" },
-      { status: 200 }
+      { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create new user" },
+      { error: "Failed to create new user", details: error },
       { status: 400 }
     );
   }
