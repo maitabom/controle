@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  
+
   if (!session || !session.user) {
     return NextResponse.json({ error: "Not authorized" }, { status: 401 });
   }
@@ -29,7 +29,40 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create new user", details: error },
+      { error: "Failed to create new customer", details: error },
+      { status: 400 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "Not authorized" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const customerId = searchParams.get("id");
+
+  if (!customerId) {
+    return NextResponse.json({ error: "Request invalid" }, { status: 400 });
+  }
+
+  try {
+    await prisma.customer.delete({
+      where: {
+        id: customerId,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Customer has been delete sucessful" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete customer", details: error },
       { status: 400 }
     );
   }
