@@ -1,12 +1,13 @@
 import { FiFile, FiTrash2 } from "react-icons/fi";
+import TicketItemProperties from "./properties";
 
-export default function TicketItem() {
+export default function TicketItem({ ticket, customer }: TicketItemProperties) {
   return (
     <tr className="border-b-2 border-b-slate-200 h-16 last:border-b-0 bg-slate-50 hover:bg-gray-200 duration-300">
-      <td className="text-left pl-1 md:pl-0">Lorena Ípsila</td>
-      <td className="text-left hidden sm:table-cell">01/10/2024</td>
+      <td className="text-left pl-1 md:pl-0">{customer?.name}</td>
+      <td className="text-left hidden sm:table-cell">{ticket.created_at?.toLocaleDateString("pt-br")}</td>
       <td className="text-left">
-        <span className="bg-green-500 px-2 py-1 rounded">ABERTO</span>
+        <span className="bg-green-500 px-2 py-1 rounded">{ticket.status}</span>
       </td>
       <td className="text-right">
         <button className="mr-2">
