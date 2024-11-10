@@ -4,9 +4,12 @@ import { FiCheckSquare, FiFile, FiTrash2 } from "react-icons/fi";
 import TicketItemProperties from "./properties";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { ModalContext } from "@/providers/modal";
 
 export default function TicketItem({ ticket, customer }: TicketItemProperties) {
   const router = useRouter();
+  const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
 
   async function handleChangeStatus() {
     try {
@@ -18,6 +21,15 @@ export default function TicketItem({ ticket, customer }: TicketItemProperties) {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  function handleOpenModal() {
+    setDetailTicket({
+      customer: customer,
+      ticket: ticket,
+    });
+    
+    handleModalVisible();
   }
 
   return (
@@ -33,7 +45,7 @@ export default function TicketItem({ ticket, customer }: TicketItemProperties) {
         <button className="mr-2" onClick={handleChangeStatus}>
           <FiCheckSquare size={24} color="#131313" />
         </button>
-        <button>
+        <button onClick={handleOpenModal}>
           <FiFile size={24} color="#3B82F6" />
         </button>
       </td>
