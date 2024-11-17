@@ -3,6 +3,43 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+export async function POST(request: Request) {
+  const { customer, name, description } = await request.json();
+
+  try {
+    if (!customer || !name || !description) {
+      return NextResponse.json(
+        {
+          error: "Failed create new ticket",
+          details: "Missing a required field data",
+        },
+        { status: 406 }
+      );
+    }
+
+    await prisma.ticket.create({
+      data: {
+        name: name,
+        description: description,
+        status: "ABERTO",
+        customerId: customer,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message: "Chamado registrado com sucesso",
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed create new ticket", details: error },
+      { status: 406 }
+    );
+  }
+}
+
 export async function PATCH(request: Request) {
   const session = await getServerSession(authOptions);
 

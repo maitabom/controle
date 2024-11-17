@@ -92,7 +92,7 @@ export default function GuestTicket() {
           </form>
         )}
 
-        {customer !== null && <FormTicket />}
+        {customer !== null && <FormTicket customer={customer} />}
       </main>
     </div>
   );
